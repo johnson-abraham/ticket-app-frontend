@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TicketForm } from '../../model/ticket-form';
 import { Passenger } from '../../model/passenger';
 import { AvailableSeats } from '../info/available-seats';
@@ -20,6 +20,14 @@ export const BookTicketPage: React.FC<BookTicketPageProps> = ({
   const [seatId, setSeatId] = useState('');
 
   const [errorMessage, setErrorMessage] = useState('');
+
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (emailRef.current) {
+      emailRef.current.focus();
+    }
+  }, []);
 
   const onSubmit = useCallback(() => {
     if (email && firstName && lastName) {
@@ -54,6 +62,7 @@ export const BookTicketPage: React.FC<BookTicketPageProps> = ({
       <input
         type="email"
         placeholder="Email"
+        ref={emailRef}
         value={email}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setEmail(event.target.value)

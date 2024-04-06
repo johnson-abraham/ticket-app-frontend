@@ -1,5 +1,5 @@
 import { Passenger } from '../../model/passenger';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface SearchTicketPageProps {
   onSuccessfulSearch: (passengers: Passenger[]) => void;
@@ -9,6 +9,14 @@ export const SearchTicketPage: React.FC<SearchTicketPageProps> = ({
   onSuccessfulSearch,
 }) => {
   const [email, setEmail] = useState('');
+
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (emailRef.current) {
+      emailRef.current?.focus();
+    }
+  }, []);
 
   const onSearch = useCallback(() => {
     fetch(`http://localhost:8080/passenger/${email}`)
@@ -22,6 +30,7 @@ export const SearchTicketPage: React.FC<SearchTicketPageProps> = ({
     <>
       <input
         type="email"
+        ref={emailRef}
         placeholder="Email"
         value={email}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
