@@ -29,6 +29,29 @@ export const SearchTicket = () => {
       });
   }, []);
 
+  const onUpdateSeat = useCallback(
+    (passengerId: string, oldSeatId: string, newSeatId: string) => {
+      fetch(`http://localhost:8080/passenger/updateSeat`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          passengerId,
+          oldSeatId,
+          newSeatId,
+        }),
+      })
+        .then((obj) => obj.json())
+        .then((result: Passenger) => {
+          setPassengers((prev) =>
+            prev?.map((p) => (p.id === result.id ? result : p)),
+          );
+        });
+    },
+    [],
+  );
+
   return (
     <>
       <SearchTicketPage onSuccessfulSearch={onSuccessfulSearch} />
@@ -39,6 +62,7 @@ export const SearchTicket = () => {
         <PassengerAndTicketInfo
           passengers={passengers}
           onDelete={onDelete}
+          onUpdateSeat={onUpdateSeat}
           key={key}
         />
       ) : null}
