@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { BookTicket } from './components/ticket-booking/book-ticket';
+import { SearchTicket } from './components/ticket-search/search-ticket';
+
+enum CurrentPage {
+  BookTicket,
+  SearchTicket,
+}
 
 function App() {
+  const [currentPage, setCurrentPage] = useState(CurrentPage.BookTicket);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1
+        style={{
+          cursor: 'pointer',
+          color: currentPage === CurrentPage.BookTicket ? 'blue' : 'black',
+        }}
+        onClick={() => setCurrentPage(CurrentPage.BookTicket)}
+      >
+        Book Ticket
+      </h1>
+      <h1
+        style={{
+          cursor: 'pointer',
+          color: currentPage === CurrentPage.SearchTicket ? 'blue' : 'black',
+        }}
+        onClick={() => setCurrentPage(CurrentPage.SearchTicket)}
+      >
+        Search Ticket
+      </h1>
+      {currentPage === CurrentPage.BookTicket ? <BookTicket /> : null}
+      {currentPage === CurrentPage.SearchTicket ? <SearchTicket /> : null}
+    </>
   );
 }
 
